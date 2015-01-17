@@ -1,0 +1,41 @@
+package com.example.hospitalapp;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
+import android.widget.EditText;
+
+public class NurseRecordActivity extends Activity {
+	
+	String dbp;
+	String sbp; 
+	String temp; 
+	String hr; 
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		EditText ed1; 
+		EditText ed2; 
+		EditText ed3; 
+		EditText ed4; 
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_nurse_record);
+		ed1 = (EditText) findViewById(R.id.diastolic_bp); 
+		ed2 = (EditText) findViewById(R.id.systolic_bp); 
+		ed3 = (EditText) findViewById(R.id.temp_edit); 
+		ed4 = (EditText) findViewById(R.id.hr_edit); 
+		
+		dbp = ed1.getText().toString();
+		sbp = ed2.getText().toString(); 
+		temp = ed3.getText().toString();
+		hr = ed4.getText().toString();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.nurse_record, menu);
+		return true;
+	}
+
+}

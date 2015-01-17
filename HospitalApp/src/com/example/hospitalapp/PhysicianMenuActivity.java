@@ -1,0 +1,41 @@
+package com.example.hospitalapp;
+
+import BackendStuff.DatabaseHelperAdapter;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.View;
+
+public class PhysicianMenuActivity extends Activity {
+	
+
+	String status = null;
+	DatabaseHelperAdapter databaseHelper = null; 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_physician_menu);
+		Intent phyIntent = getIntent();
+		status = phyIntent.getStringExtra(MainActivity.STATUS);
+		//databaseHelper = (DatabaseHelperAdapter) phyIntent.getSerializableExtra(MainActivity.DATABASE);
+		
+		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.physician_menu, menu);
+		return true;
+	}
+	public void logout1(View view){
+		Intent logout_1 = new Intent(this, MainActivity.class);
+		startActivity(logout_1);
+	}
+	public void doc_search(View view){
+		Intent doc_sc = new Intent(this, PatientSearchActivity.class);
+		doc_sc.putExtra(MainActivity.STATUS, status);
+		startActivity(doc_sc);
+	}
+}

@@ -1,0 +1,42 @@
+package com.example.hospitalapp;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
+import android.widget.TextView;
+
+public class PatientActivity extends Activity {
+	
+	String status; 
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		TextView tv1; 
+		TextView tv2;
+		TextView tv3;
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_patient);
+		tv1 = (TextView) findViewById(R.id.pname);
+		tv2 = (TextView) findViewById(R.id.phc);
+		tv3 = (TextView) findViewById(R.id.pdob); 
+		Intent intent_sc = getIntent();
+		String name_p = intent_sc.getStringExtra(PatientSearchActivity.NAME); 
+		String hc_p = intent_sc.getStringExtra(PatientSearchActivity.HC); 
+		String dob_p = intent_sc.getStringExtra(PatientSearchActivity.DOB); 
+		status = intent_sc.getStringExtra(MainActivity.STATUS);
+
+		tv1.setText(name_p); 
+		tv2.setText(hc_p); 
+		tv3.setText(dob_p);
+		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.patient, menu);
+		return true;
+	}
+
+}

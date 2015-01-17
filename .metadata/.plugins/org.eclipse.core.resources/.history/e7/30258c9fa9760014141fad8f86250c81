@@ -1,0 +1,46 @@
+package com.example.hospitalapp;
+
+import BackendStuff.DatabaseHelperAdapter;
+import BackendStuff.Message;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
+
+public class DateTimeActivity extends Activity {
+
+	EditText edit1; 
+	EditText edit2; 
+	String hc_p; 
+	DatabaseHelperAdapter databaseHelper = MainActivity.databaseHelper;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_date_time);
+		edit1 = (EditText) findViewById(R.id.time_edit); 
+		edit2 = (EditText) findViewById(R.id.date_edit);
+		Intent setTimeDate = getIntent(); 
+		hc_p = setTimeDate.getStringExtra(PatientSearchActivity.HC); 
+		
+		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.date_time, menu);
+		return true;
+	}
+	public void time_save(View view){
+		String time_seen = edit1.getText().toString();
+		String date_seen = edit2.getText().toString(); 
+		
+		databaseHelper.insertTimeSeen(hc_p, time_seen); 
+		databaseHelper.insertDateSeen(hc_p, date_seen); 
+		Message.message(this, "Saved");
+	}
+
+}

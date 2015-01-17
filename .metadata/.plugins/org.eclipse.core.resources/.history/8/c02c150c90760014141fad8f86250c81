@@ -1,0 +1,60 @@
+package com.example.hospitalapp;
+
+import BackendStuff.DatabaseHelperAdapter;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
+
+public class NurseRecordActivity extends Activity {
+	
+	EditText ed1; 
+	EditText ed2; 
+	EditText ed3;
+	EditText ed4;
+	String hc_p;
+	DatabaseHelperAdapter databaseHelper = MainActivity.databaseHelper;
+	final String status = "Nurse"; 
+	String logtime;
+	String logdate;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_nurse_record);
+		ed1 = (EditText) findViewById(R.id.diastolic_bp); 
+		ed2 = (EditText) findViewById(R.id.systolic_bp); 
+		ed3 = (EditText) findViewById(R.id.temp_edit); 
+		ed4 = (EditText) findViewById(R.id.hr_edit); 
+		//DateTime dt = new DateTime(); 
+		//String date_time = dt.getCurrentDateTime();
+		//String[] datetime = date_time.split(" ");
+		//logtime = datetime[1]; 
+		//logdate = datetime[0];
+		
+		Intent newr = getIntent();
+		hc_p = newr.getStringExtra(PatientSearchActivity.HC);
+		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.nurse_record, menu);
+		return true;
+	}
+	
+	public void save_Record(View view){ 
+		String dbp = ed1.getText().toString();
+		String sbp = ed2.getText().toString();
+		String temp = ed3.getText().toString();
+		String hr = ed4.getText().toString();
+		databaseHelper.insertNDataToLog(hc_p, temp, hr, sbp, dbp, logtime, logdate); 
+		Intent back = new Intent(this, PatientSearchActivity.class); 
+		back.putExtra(MainActivity.STATUS, status);
+		startActivity(back); 
+	}
+
+}

@@ -1,0 +1,46 @@
+package com.example.hospitalapp;
+
+import BackendStuff.DatabaseHelperAdapter;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
+
+public class NewPatientActivity extends Activity {
+	
+	DatabaseHelperAdapter databaseHelper = MainActivity.databaseHelper;
+	EditText ed1;
+	EditText ed2; 
+	EditText ed3; 
+	public static final String HCNO = "HealthcardNo";
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_new_patient);
+		
+		ed1 = (EditText) findViewById(R.id.name_edit);
+		ed2 = (EditText) findViewById(R.id.num_edit);
+		ed3 = (EditText) findViewById(R.id.dob_edit);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.new_patient, menu);
+		return true;
+	}
+	
+	public void add_Patient(View view){
+		String name_patient = ed1.getText().toString();
+		String hc_patient = ed2.getText().toString();
+		String dob_patient = ed3.getText().toString();
+		
+		databaseHelper.insertData(name_patient, hc_patient, dob_patient);
+		Intent nexti = new Intent(this, PatientActivity.class);
+		nexti.putExtra(HCNO, hc_patient);
+		startActivity(nexti);
+	}
+
+}

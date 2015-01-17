@@ -1,0 +1,31 @@
+package com.example.hospitalapp;
+
+import BackendStuff.Message;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
+import android.widget.TextView;
+
+public class RecordsActivity extends Activity {
+
+	TextView textView = null;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Intent see = getIntent();
+		String rec = see.getStringExtra(PatientActivity.RECORD);
+		textView = (TextView) findViewById(R.id.display_txt);		
+		textView.setText(rec);
+		//Message.message(this, rec);
+		setContentView(R.layout.activity_records);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.records, menu);
+		return true;
+	}
+
+}

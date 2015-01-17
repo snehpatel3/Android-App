@@ -1,0 +1,168 @@
+package BackendStuff;
+
+import java.io.Serializable;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class DatabaseHelperAdapter implements Serializable{
+	
+	DatabaseHelper database;
+	public DatabaseHelperAdapter(Context context){
+		database = new DatabaseHelper(context);
+	}
+	
+	
+	public String getAllData(){
+		SQLiteDatabase db = database.getWritableDatabase();
+		String[] columns = {DatabaseHelper.NAME};
+		Cursor cursor = db.query(DatabaseHelper.TABLE1_NAME, columns, null, null, null, null, null);
+		StringBuffer buffer = new StringBuffer();
+		while(cursor.moveToNext()){
+			int ind = cursor.getColumnIndex(DatabaseHelper.NAME);
+			String name = cursor.getString(ind);
+			buffer.append(name + "\n");
+		}
+		return buffer.toString();
+	}
+	
+	public String[] getPatientInfo(String name, String healthcard, String DOB){
+		SQLiteDatabase db = database.getWritableDatabase(); 
+		String[] columns = {DatabaseHelper.NAME, DatabaseHelper.DOB, DatabaseHelper.HEALTHCARD}; 
+		String[] args = {name, healthcard, DOB};
+		String[] info = new String[3];
+		Cursor cursor = db.query(DatabaseHelper.TABLE1_NAME, columns, DatabaseHelper.NAME + "=?" + "AND"+ DatabaseHelper.HEALTHCARD+"=?" + "AND" +  DatabaseHelper.DOB+"=?", args, null, null, null);
+		int index = cursor.getColumnIndex(DatabaseHelper.NAME);
+		int index1 = cursor.getColumnIndex(DatabaseHelper.HEALTHCARD);
+		int index2 = cursor.getColumnIndex(DatabaseHelper.DOB); 
+		info[0] = cursor.getString(index);
+		info[1] = cursor.getString(index1);
+		info[2] = cursor.getString(index2);
+		return info;
+		
+	}
+	
+	public boolean contains(String healthcard){
+		SQLiteDatabase db = database.getWritableDatabase(); 
+		String[] columns = {DatabaseHelper.HEALTHCARD};
+		Cursor cursor = db.query(DatabaseHelper.TABLE1_NAME, columns, null, null, null, null, null); 
+		while(cursor.moveToNext()){
+			int index = cursor.getColumnIndex(DatabaseHelper.HEALTHCARD); 
+			if(healthcard.contentEquals(cursor.getString(index))){
+				return true;
+			}
+		}
+		return false; 
+	}
+	
+	public long insertPatientInfoONLY(String name, String healthcard, String bday){
+		SQLiteDatabase db = database.getWritableDatabase();
+		ContentValues contentValues1 = new ContentValues();
+		contentValues1.put(DatabaseHelper.NAME, name); 
+		contentValues1.put(DatabaseHelper.HEALTHCARD, healthcard);
+		contentValues1.put(DatabaseHelper.DOB, bday);
+		long id1 = db.insert(DatabaseHelper.TABLE1_NAME, null, contentValues1);
+		return id1; 
+	}
+	
+	public long insertPatientTime(String time, String date){
+		SQLiteDatabase db = database.getWritableDatabase();
+		ContentValues contentValues2 = new ContentValues();
+		contentValues2.put(DatabaseHelper.TIME_SEEN, time); 
+		contentValues2.put(DatabaseHelper.DATE_SEEN, date);
+		long id2 = db.insert(DatabaseHelper.TABLE1_NAME, null, contentValues2);
+		return id2; 
+	}
+	public long insertNurseLog(String healthcard, String temperature, String heart_rate, String sy_measure, String dy_measure, String log_time, String log_date){
+		SQLiteDatabase db = database.getWritableDatabase(); 
+		ContentValues contentValues3 = new ContentValues();
+		contentValues3.put(DatabaseHelper.HEALTHCARD, healthcard); 
+		contentValues3.put(DatabaseHelper.TEMPERATURE, temperature);
+		contentValues3.put(DatabaseHelper.HEARTRATE, heart_rate);
+		contentValues3.put(DatabaseHelper.SYSBP, sy_measure);
+		contentValues3.put(DatabaseHelper.DYBP, dy_measure);
+		contentValues3.put(DatabaseHelper.LOGTIME, log_time);
+		contentValues3.put(DatabaseHelper.LOGDATE, log_date);
+		long id3 = db.insert(DatabaseHelper.TABLE2_NAME, null, contentValues3);
+		return id3;
+	}
+	public long insertPhyLog(String med, String in){
+		SQLiteDatabase db = database.getWritableDatabase(); 
+		ContentValues contentValues4 = new ContentValues();
+		contentValues4.put(DatabaseHelper.MED, med); 
+		contentValues4.put(DatabaseHelper.MEDIN, in);
+		long id4 = db.insert(DatabaseHelper.TABLE2_NAME, null, contentValues4);
+		return id4;
+	}
+	
+	static class DatabaseHelper extends SQLiteOpenHelper{
+		private static final String DATABASE_NAME = "Hospital Database";
+		private static final String TABLE1_NAME = "Patient Table";
+		private static final String TABLE2_NAME = "Log Table";
+		private static final int DATABASE_VERSION = 1; 
+		private static final String UID = "_id"; 
+		private static final String NAME = "Name"; 
+		private static final String HEALTHCARD = "Health Card";
+		private static final String DOB = "Birthdate";  
+		private static final String TEMPERATURE = "Temperature";
+		private static final String HEARTRATE = "Heart Rate";
+		private static final String SYSBP = "Systolic BP";
+		private static final String DYBP = "Diastolic BP";
+		private static final String LOGTIME = "Log Time";
+		private static final String LOGDATE = "Log Date";
+		private static final String MED = "Medication";
+		private static final String MEDIN = "Medication Information";
+		private static final String URGENCY = "Urgency";
+		private static final String TIME_SEEN = "Time Seen";
+		private static final String DATE_SEEN = "Date Seen";
+		private static final String CREATE_TABLE1 = "CREATE TABLE " + TABLE1_NAME + " (" + UID 
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " VARCHAR(255), " 
+				+ HEALTHCARD + " VARCHAR(255), " + DOB + " VARCHAR(255), " + URGENCY + " VARCHAR(255), " 
+				+ TIME_SEEN + " VARCHAR(255), " + DATE_SEEN + " VARCHAR(255));";
+		private static final String DROP_TABLE1 = "DROP TABLE IF EXISTS " + TABLE1_NAME;
+		private static final String CREATE_TABLE2 = "CREATE TABLE " + TABLE2_NAME + " (" + UID 
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + HEALTHCARD + " VARCHAR(255), " + HEALTHCARD 
+				+ " VARCHAR(255), " + TEMPERATURE + " VARCHAR(255), " + HEARTRATE + " VARCHAR(255), " + SYSBP 
+				+ " VARCHAR(255), " + DYBP + " VARCHAR(255), " + MED + " VARCHAR(255), " + MEDIN + " VARCHAR(255), " 
+				+ LOGTIME + " VARCHAR(255), " + LOGDATE + " VARCHAR(255));";
+		private static final String DROP_TABLE2 = "DROP TABLE IF EXISTS " + TABLE1_NAME;
+		private Context context; 
+		
+		public DatabaseHelper(Context context){
+			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+			this.context = context;
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+			// TODO Auto-generated method stub
+			try { 
+				db.execSQL(CREATE_TABLE1);
+				db.execSQL(CREATE_TABLE2);
+			}catch(SQLException e){
+				Message.message(context, ""+e); 
+			}
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			// TODO Auto-generated method stub
+			try{
+				db.execSQL(DROP_TABLE1); 
+				db.execSQL(DROP_TABLE2);
+				onCreate(db); 
+			}catch(SQLException e){
+				Message.message(context, ""+e);
+			}
+		}
+		
+		
+	}
+}

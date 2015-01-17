@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".NurseRecordActivity" >
+
+    <EditText
+        android:id="@+id/diastolic_bp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="37dp"
+        android:hint="@string/diastolic_bp"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/systolic_bp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/diastolic_bp"
+        android:layout_below="@+id/diastolic_bp"
+        android:hint="@string/systolic_bp"
+        android:ems="10" />
+
+    <EditText
+        android:id="@+id/temp_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/systolic_bp"
+        android:layout_below="@+id/systolic_bp"
+        android:layout_marginTop="51dp"
+        android:hint="@string/temp_edit"
+        android:ems="10" />
+
+    <EditText
+        android:id="@+id/hr_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/temp_edit"
+        android:layout_below="@+id/temp_edit"
+        android:layout_marginTop="57dp"
+        android:hint="@string/hr_edit"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/save_button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="31dp"
+        android:onClick="save_Record"
+        android:text="@string/save_button1" />
+
+</RelativeLayout>

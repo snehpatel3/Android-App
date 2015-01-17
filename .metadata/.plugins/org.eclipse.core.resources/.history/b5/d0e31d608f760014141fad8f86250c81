@@ -1,0 +1,27 @@
+package BackendStuff;
+
+import java.util.Calendar;
+
+public class DateTime {
+	
+	Calendar cal= Calendar.getInstance();
+	String year = String.format("%1$tY", cal);
+	String month = String.format("%1$tm", cal);
+	String day = String.format("%1$td", cal);
+
+	String hour = String.format("%1$tH", cal); 
+	String min = String.format("%1$M", cal);
+	String sec = String.format("%1$S", cal);
+
+	String finalDateString = year+"-"+month+"-"+day+" "+hour+":"+min+":"+sec; 
+	
+	public DateTime() {
+
+	}
+	
+	public String getCurrentDateTime() {
+		
+		return finalDateString;
+		
+	}
+}
